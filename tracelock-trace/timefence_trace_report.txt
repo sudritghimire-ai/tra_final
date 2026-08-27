@@ -1,0 +1,12 @@
+TimeFence real-ingestion report
+================================
+source=strace
+raw_syscall_lines_seen=102
+relevant_events=4
+digest=315167033
+
+Relevant event timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_demo.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_demo.txt

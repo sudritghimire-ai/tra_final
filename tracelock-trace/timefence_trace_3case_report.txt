@@ -1,0 +1,94 @@
+TimeFence real-ingestion 3-case report
+======================================
+source=strace
+core=timefence-core path dependency
+accumulator=K-Sentry triangular O(1) updater
+
+Case: clean_vs_clean
+status=CLEAN
+expected_raw_syscall_lines_seen=111
+observed_raw_syscall_lines_seen=111
+expected_relevant_events=4
+observed_relevant_events=4
+expected_digest=626704286
+observed_digest=626704286
+
+Expected timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+
+Observed timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+
+Expected one-line timeline:
+Exec:strace-target:/usr/bin/bash -> OpenFile:strace-target:/tmp/timefence_clean.txt -> Exec:strace-target:/usr/bin/cat -> OpenFile:strace-target:/tmp/timefence_clean.txt
+
+Observed one-line timeline:
+Exec:strace-target:/usr/bin/bash -> OpenFile:strace-target:/tmp/timefence_clean.txt -> Exec:strace-target:/usr/bin/cat -> OpenFile:strace-target:/tmp/timefence_clean.txt
+
+--------------------------------------
+
+Case: clean_vs_extra_overwrite
+status=METADATA_MISMATCH_LENGTH
+expected_raw_syscall_lines_seen=111
+observed_raw_syscall_lines_seen=112
+expected_relevant_events=4
+observed_relevant_events=5
+expected_digest=626704286
+observed_digest=754361633
+
+Expected timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+
+Observed timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_extra.txt
+- OpenFile process=strace-target target=/tmp/timefence_extra.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_extra.txt
+
+Expected one-line timeline:
+Exec:strace-target:/usr/bin/bash -> OpenFile:strace-target:/tmp/timefence_clean.txt -> Exec:strace-target:/usr/bin/cat -> OpenFile:strace-target:/tmp/timefence_clean.txt
+
+Observed one-line timeline:
+Exec:strace-target:/usr/bin/bash -> OpenFile:strace-target:/tmp/timefence_extra.txt -> OpenFile:strace-target:/tmp/timefence_extra.txt -> Exec:strace-target:/usr/bin/cat -> OpenFile:strace-target:/tmp/timefence_extra.txt
+
+--------------------------------------
+
+Case: clean_vs_same_length_change
+status=DIGEST_MISMATCH_SAME_LENGTH
+expected_raw_syscall_lines_seen=111
+observed_raw_syscall_lines_seen=111
+expected_relevant_events=4
+observed_relevant_events=4
+expected_digest=626704286
+observed_digest=608922962
+
+Expected timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_clean.txt
+
+Observed timeline:
+- Exec process=strace-target target=/usr/bin/bash
+- OpenFile process=strace-target target=/tmp/timefence_observed.txt
+- Exec process=strace-target target=/usr/bin/cat
+- OpenFile process=strace-target target=/tmp/timefence_observed.txt
+
+Expected one-line timeline:
+Exec:strace-target:/usr/bin/bash -> OpenFile:strace-target:/tmp/timefence_clean.txt -> Exec:strace-target:/usr/bin/cat -> OpenFile:strace-target:/tmp/timefence_clean.txt
+
+Observed one-line timeline:
+Exec:strace-target:/usr/bin/bash -> OpenFile:strace-target:/tmp/timefence_observed.txt -> Exec:strace-target:/usr/bin/cat -> OpenFile:strace-target:/tmp/timefence_observed.txt
+
+--------------------------------------
+

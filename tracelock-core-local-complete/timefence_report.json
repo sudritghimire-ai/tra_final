@@ -1,0 +1,68 @@
+[
+  {
+    "case_name": "clean",
+    "status": "Clean",
+    "original_len": 4,
+    "observed_len": 4,
+    "expected_digest": 805078969,
+    "observed_digest": 805078969,
+    "original_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "observed_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "conclusion": "clean: timeline evidence matches source checkpoint"
+  },
+  {
+    "case_name": "drop_one",
+    "status": "MetadataMismatch(Length)",
+    "original_len": 4,
+    "observed_len": 3,
+    "expected_digest": 805078969,
+    "observed_digest": 141835815,
+    "original_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "observed_timeline": "Exec:bash:/bin/bash -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "conclusion": "metadata mismatch: likely length/range/epoch/parameter problem: Length"
+  },
+  {
+    "case_name": "swap_adjacent",
+    "status": "DigestMismatch",
+    "original_len": 4,
+    "observed_len": 4,
+    "expected_digest": 805078969,
+    "observed_digest": 492499452,
+    "original_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "observed_timeline": "Exec:bash:/bin/bash -> ReadFile:bash:/var/run/secrets/token -> OpenFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "conclusion": "digest mismatch: same range length, but content/order/splice changed"
+  },
+  {
+    "case_name": "duplicate_one",
+    "status": "MetadataMismatch(Length)",
+    "original_len": 4,
+    "observed_len": 5,
+    "expected_digest": 805078969,
+    "observed_digest": 862797157,
+    "original_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "observed_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "conclusion": "metadata mismatch: likely length/range/epoch/parameter problem: Length"
+  },
+  {
+    "case_name": "truncate_tail",
+    "status": "MetadataMismatch(Length)",
+    "original_len": 4,
+    "observed_len": 3,
+    "expected_digest": 805078969,
+    "observed_digest": 824502794,
+    "original_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "observed_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token",
+    "conclusion": "metadata mismatch: likely length/range/epoch/parameter problem: Length"
+  },
+  {
+    "case_name": "splice_old_prefix",
+    "status": "DigestMismatch",
+    "original_len": 4,
+    "observed_len": 4,
+    "expected_digest": 805078969,
+    "observed_digest": 779048274,
+    "original_timeline": "Exec:bash:/bin/bash -> OpenFile:bash:/var/run/secrets/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "observed_timeline": "Exec:old-bash:/bin/bash -> OpenFile:bash:/old/secret/token -> ReadFile:bash:/var/run/secrets/token -> Connect:bash:198.51.100.10:443",
+    "conclusion": "digest mismatch: same range length, but content/order/splice changed"
+  }
+]
