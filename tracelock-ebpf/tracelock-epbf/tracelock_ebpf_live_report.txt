@@ -1,0 +1,22 @@
+TraceLock eBPF live K-Sentry report
+===================================
+source=eBPF ringbuf
+tracepoints=syscalls:sys_enter_execve,syscalls:sys_enter_openat
+core=TraceLock-core path dependency
+accumulator=K-Sentry triangular O(1) updater
+events_seen=30
+final_digest=453972990
+
+First events:
+- type=OpenFile pid=31940 uid=0 ts=1932029162890 comm=wsl-pro-service target=/mnt/c/Users/sudri/.ubuntupro/.address x=396214440 digest_after=396214440
+- type=OpenFile pid=458 uid=0 ts=1932030638843 comm=systemd-journal target=/proc/31354/status x=745377832 digest_after=613859229
+- type=OpenFile pid=458 uid=0 ts=1932030692957 comm=systemd-journal target=/proc/31354/status x=391216289 digest_after=801045418
+- type=OpenFile pid=458 uid=0 ts=1932030712903 comm=systemd-journal target=/proc/31354/comm x=706332471 digest_after=109344397
+- type=OpenFile pid=458 uid=0 ts=1932030735483 comm=systemd-journal target=/proc/31354/cmdline x=455710312 digest_after=62323904
+
+Last events:
+- type=OpenFile pid=517 uid=0 ts=1933733440494 comm=systemd-udevd target=run x=548486182 digest_after=962080724
+- type=OpenFile pid=517 uid=0 ts=1933733445788 comm=systemd-udevd target=udev x=844166072 digest_after=935663470
+- type=OpenFile pid=517 uid=0 ts=1933733450830 comm=systemd-udevd target=rules.d x=323259821 digest_after=727277687
+- type=OpenFile pid=517 uid=0 ts=1933733458048 comm=systemd-udevd target=/ x=122244602 digest_after=576278479
+- type=OpenFile pid=517 uid=0 ts=1933733464537 comm=systemd-udevd target=/ x=513721091 digest_after=453972990

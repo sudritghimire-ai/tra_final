@@ -13,7 +13,7 @@ mod csv;
 use ksentry::{ksentry_fast, ksentry_spec};
 use rolling::{rolling_hash, rolling_rebase_digest, rolling_shifted_spec};
 use antirebase::demo_ksentry_not_one_scalar_rebase;
-use checkpoint::{CheckpointMismatch, TimeFenceCheckpoint};
+use checkpoint::{CheckpointMismatch, TraceLockCheckpoint};
 use fault::{inject_fault, FaultKind};
 use verifier::{verify_checkpoint, VerificationStatus};
 use incident::{run_incident_suite, summarize_events};
@@ -64,15 +64,15 @@ fn main() {
 
 if demo_ksentry_not_one_scalar_rebase(q, p) {
     println!("K-Sentry result: one scalar cannot rebase all triangular chunks");
-    println!("This is the TimeFence anti-rebase advantage over rolling hash");
+    println!("This is the TraceLock anti-rebase advantage over rolling hash");
 } else {
     println!("Unexpected: anti-rebase demo failed");
 }
 
 
-    println!("\n--- TimeFence checkpoint metadata demo ---");
+    println!("\n--- TraceLock checkpoint metadata demo ---");
 
-    let expected = TimeFenceCheckpoint::new(
+    let expected = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -82,7 +82,7 @@ if demo_ksentry_not_one_scalar_rebase(q, p) {
         p,
     );
 
-    let observed_same = TimeFenceCheckpoint::new(
+    let observed_same = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -92,7 +92,7 @@ if demo_ksentry_not_one_scalar_rebase(q, p) {
         p,
     );
 
-    let observed_bad_len = TimeFenceCheckpoint::new(
+    let observed_bad_len = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -102,7 +102,7 @@ if demo_ksentry_not_one_scalar_rebase(q, p) {
         p,
     );
 
-    let observed_bad_digest = TimeFenceCheckpoint::new(
+    let observed_bad_digest = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -148,7 +148,7 @@ if demo_ksentry_not_one_scalar_rebase(q, p) {
     }
 
 
-        println!("\n--- TimeFence verifier demo ---");
+        println!("\n--- TraceLock verifier demo ---");
 
     let source_stream = vec![101u128, 202, 303, 404];
     let observed_stream = inject_fault(&source_stream, FaultKind::SwapAdjacent);
@@ -156,7 +156,7 @@ if demo_ksentry_not_one_scalar_rebase(q, p) {
     let expected_digest = ksentry_fast(&source_stream, q, p).digest();
     let observed_digest = ksentry_fast(&observed_stream, q, p).digest();
 
-    let expected_ckpt = TimeFenceCheckpoint::new(
+    let expected_ckpt = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -166,7 +166,7 @@ if demo_ksentry_not_one_scalar_rebase(q, p) {
         p,
     );
 
-    let observed_ckpt = TimeFenceCheckpoint::new(
+    let observed_ckpt = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -252,11 +252,11 @@ for case in cases {
     println!("Digest: {}", bench.digest);
 
 
-    println!("\n--- Full TimeFence evidence reports ---");
+    println!("\n--- Full TraceLock evidence reports ---");
 let cases = run_incident_suite(q, p);
 print_reports_for_cases(&cases);
 
-let json_path = "timefence_report.json";
+let json_path = "TraceLock_report.json";
 
 match write_reports_json(json_path, &cases) {
     Ok(_) => println!("Wrote evidence report JSON to {}", json_path),

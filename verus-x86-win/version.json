@@ -1,0 +1,12 @@
+{
+  "verus": {
+    "profile": "release",
+    "version": "0.2026.02.22.2c9a6a0",
+    "platform": {
+      "os": "windows",
+      "arch": "x86_64"
+    },
+    "toolchain": "1.93.0-x86_64-pc-windows-msvc",
+    "commit": "2c9a6a0aeae40274d2b4ba33108c365c0e2fac4a"
+  }
+}

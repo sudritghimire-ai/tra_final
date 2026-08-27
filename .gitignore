@@ -1,7 +1,0 @@
-*
-!tracelock-core/
-!tracelock-core-local-complete/
-!tracelock-ebpf/
-!tracelock-trace/
-!.gitignore
-target/

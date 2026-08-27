@@ -1,6 +1,6 @@
 // src/report.rs
 //
-// Human-readable TimeFence evidence reports.
+// Human-readable TraceLock evidence reports.
 // Zero-dependency JSON export to avoid Windows Application Control
 // blocking dependency build scripts.
 
@@ -55,7 +55,7 @@ pub fn build_evidence_report(case: &IncidentCase) -> EvidenceReport {
 }
 
 pub fn print_evidence_report(report: &EvidenceReport) {
-    println!("\n================ TimeFence Evidence Report ================");
+    println!("\n================ TraceLock Evidence Report ================");
     println!("Case: {}", report.case_name);
     println!("Status: {}", report.status);
     println!(

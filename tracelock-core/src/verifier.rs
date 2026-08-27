@@ -1,11 +1,11 @@
 // src/verifier.rs
 //
-// TimeFence verifier.
+// TraceLock verifier.
 //
 // It compares an expected source-side checkpoint against an observed
 // downstream checkpoint and classifies the evidence window.
 
-use crate::checkpoint::{CheckpointMismatch, TimeFenceCheckpoint};
+use crate::checkpoint::{CheckpointMismatch, TraceLockCheckpoint};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum VerificationStatus {
@@ -36,8 +36,8 @@ impl VerificationReport {
 }
 
 pub fn verify_checkpoint(
-    expected: &TimeFenceCheckpoint,
-    observed: &TimeFenceCheckpoint,
+    expected: &TraceLockCheckpoint,
+    observed: &TraceLockCheckpoint,
 ) -> VerificationReport {
     let reason = expected.reason_mismatch(observed);
 
@@ -59,8 +59,8 @@ pub fn verify_checkpoint(
 }
 
 pub fn verify_many(
-    expected: &[TimeFenceCheckpoint],
-    observed: &[TimeFenceCheckpoint],
+    expected: &[TraceLockCheckpoint],
+    observed: &[TraceLockCheckpoint],
 ) -> Vec<VerificationReport> {
     expected
         .iter()
@@ -77,8 +77,8 @@ pub fn first_suspicious_report(reports: &[VerificationReport]) -> Option<&Verifi
 mod tests {
     use super::*;
 
-    fn ckpt(len: u64, digest: u128) -> TimeFenceCheckpoint {
-        TimeFenceCheckpoint::new("s", 0, 0, len, digest, 7, 1_000_000_007)
+    fn ckpt(len: u64, digest: u128) -> TraceLockCheckpoint {
+        TraceLockCheckpoint::new("s", 0, 0, len, digest, 7, 1_000_000_007)
     }
 
     #[test]

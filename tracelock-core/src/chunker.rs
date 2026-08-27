@@ -4,13 +4,13 @@
 // Splits a stream into chunks, checkpoints each chunk,
 // then finds the first suspicious chunk.
 
-use crate::checkpoint::TimeFenceCheckpoint;
+use crate::checkpoint::TraceLockCheckpoint;
 use crate::ksentry::ksentry_fast;
 use crate::verifier::{verify_checkpoint, VerificationReport};
 
 #[derive(Debug, Clone)]
 pub struct ChunkedStream {
-    pub checkpoints: Vec<TimeFenceCheckpoint>,
+    pub checkpoints: Vec<TraceLockCheckpoint>,
 }
 
 pub fn chunk_stream(
@@ -30,7 +30,7 @@ pub fn chunk_stream(
         let len = chunk.len() as u64;
         let digest = ksentry_fast(chunk, q, p).digest();
 
-        checkpoints.push(TimeFenceCheckpoint::new(
+        checkpoints.push(TraceLockCheckpoint::new(
             stream_id,
             epoch,
             start_seq,

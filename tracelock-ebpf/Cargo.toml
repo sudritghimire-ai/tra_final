@@ -1,0 +1,37 @@
+[workspace]
+members = [
+    "TraceLock_epbf",
+    "TraceLock_epbf_common",
+    "TraceLock_epbf_ebpf"
+]
+resolver = "2"
+
+[workspace.package]
+version = "0.1.0"
+edition = "2021"
+license = "MIT OR Apache-2.0"
+
+[workspace.dependencies]
+anyhow = "1"
+aya = "0.13"
+aya-log = "0.2"
+aya-build = "0.1"
+aya-ebpf = "0.1"
+aya-log-ebpf = "0.1"
+cargo_metadata = "0.18"
+env_logger = "0.11"
+libc = "0.2"
+log = "0.4"
+tokio = { version = "1", features = ["macros", "rt", "rt-multi-thread", "signal", "time"] }
+which = "6"
+
+[profile.release]
+panic = "abort"
+
+[profile.dev]
+panic = "abort"
+
+[profile.release.package.TraceLock-epbf-ebpf]
+debug = 2
+codegen-units = 1
+strip = false

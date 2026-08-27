@@ -1,8 +1,8 @@
 use std::fs;
 use std::process::Command;
 mod baselines;
-use timefence_core::events::{EventKind, TelemetryEvent};
-use timefence_core::ksentry::KSentry;
+use TraceLock_core::events::{EventKind, TelemetryEvent};
+use TraceLock_core::ksentry::KSentry;
 
 #[derive(Debug, Clone)]
 struct TraceEvent {
@@ -68,10 +68,10 @@ fn is_noise_path(path: &str) -> bool {
 }
 
 fn is_relevant_path(path: &str) -> bool {
-    path.contains("/tmp/timefence_clean.txt")
-        || path.contains("/tmp/timefence_observed.txt")
-        || path.contains("/tmp/timefence_extra.txt")
-        || path.contains("/tmp/timefence_demo.txt")
+    path.contains("/tmp/TraceLock_clean.txt")
+        || path.contains("/tmp/TraceLock_observed.txt")
+        || path.contains("/tmp/TraceLock_extra.txt")
+        || path.contains("/tmp/TraceLock_demo.txt")
         || path.contains("secret")
         || path.contains("token")
         || path.contains("/etc/passwd")
@@ -269,10 +269,10 @@ fn print_case_summary(case: &CompareCase) {
 fn write_all_cases_report(cases: &[CompareCase]) {
     let mut report = String::new();
 
-    report.push_str("TimeFence real-ingestion 3-case report\n");
+    report.push_str("TraceLock real-ingestion 3-case report\n");
     report.push_str("======================================\n");
     report.push_str("source=strace\n");
-    report.push_str("core=timefence-core path dependency\n");
+    report.push_str("core=TraceLock-core path dependency\n");
     report.push_str("accumulator=K-Sentry triangular O(1) updater\n\n");
 
     for case in cases {
@@ -321,7 +321,7 @@ fn write_all_cases_report(cases: &[CompareCase]) {
         report.push_str("--------------------------------------\n\n");
     }
 
-    fs::write("timefence_trace_3case_report.txt", report)
+    fs::write("TraceLock_trace_3case_report.txt", report)
         .expect("failed to write 3-case report");
 }
 
@@ -329,19 +329,19 @@ fn main() {
     let q = 7u128;
     let p = 1_000_000_007u128;
 
-    println!("=== TimeFence real-ingestion v2: three-case strace demo ===");
-    println!("Using verified-backed core from timefence-core");
+    println!("=== TraceLock real-ingestion v2: three-case strace demo ===");
+    println!("Using verified-backed core from TraceLock-core");
 
     let clean_script =
-        "echo secret-token >/tmp/timefence_clean.txt; cat /tmp/timefence_clean.txt; true";
+        "echo secret-token >/tmp/TraceLock_clean.txt; cat /tmp/TraceLock_clean.txt; true";
 
     let clean_observed_script =
-        "echo secret-token >/tmp/timefence_clean.txt; cat /tmp/timefence_clean.txt; true";
+        "echo secret-token >/tmp/TraceLock_clean.txt; cat /tmp/TraceLock_clean.txt; true";
 
-    let extra_overwrite_script = "echo secret-token >/tmp/timefence_extra.txt; echo tampered-token >/tmp/timefence_extra.txt; cat /tmp/timefence_extra.txt; true";
+    let extra_overwrite_script = "echo secret-token >/tmp/TraceLock_extra.txt; echo tampered-token >/tmp/TraceLock_extra.txt; cat /tmp/TraceLock_extra.txt; true";
 
     let same_length_changed_script =
-        "echo tampered-token >/tmp/timefence_observed.txt; cat /tmp/timefence_observed.txt; true";
+        "echo tampered-token >/tmp/TraceLock_observed.txt; cat /tmp/TraceLock_observed.txt; true";
 
     let cases = vec![
         build_case(
@@ -375,7 +375,7 @@ fn main() {
 
     write_all_cases_report(&cases);
 
-    println!("\nWrote 3-case report to timefence_trace_3case_report.txt");
+    println!("\nWrote 3-case report to TraceLock_trace_3case_report.txt");
 println!("\n--- Baseline evaluation ---");
 
 baselines::write_all_baseline_outputs("artifacts", 1_000_000, 10)

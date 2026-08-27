@@ -1,0 +1,35 @@
+K-Sentry Google telemetry experiment
+input_file = src/bin/google_telemetry.csv
+q = 7
+p = 18446744073709551557
+loaded_logs = 100000
+load_time_sec = 0.801849
+ingest_time_sec = 0.024662
+throughput_logs_per_sec = 4054804.74
+original_state = 18224375563280938291
+edited_state = 3779208156623239394
+reordered_state = 7282376904879918087
+inserted_state = 11576329636321989785
+deleted_state = 3472724674642802658
+truncated_state = 10525333799559065440
+edit_detected = true
+reorder_detected = true
+insertion_detected = true
+deletion_detected = true
+truncation_detected = true
+composition_holds = true
+collision_prob_bound = 5.420902442752e-10
+
+[edit attack mismatch report]
+mismatch_exists = true
+first_index = Some(50000)
+last_index = Some(50000)
+mismatch_count = 1
+mismatch_indices = [50000]
+
+[reorder attack mismatch report]
+mismatch_exists = true
+first_index = Some(0)
+last_index = Some(99999)
+mismatch_count = 2
+mismatch_indices = [0, 99999]

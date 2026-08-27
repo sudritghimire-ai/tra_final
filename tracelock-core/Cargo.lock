@@ -3,5 +3,5 @@
 version = 4
 
 [[package]]
-name = "timefence-trace"
+name = "TraceLock-trace"
 version = "0.1.0"

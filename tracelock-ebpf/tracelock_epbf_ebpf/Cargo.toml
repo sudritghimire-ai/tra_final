@@ -1,0 +1,17 @@
+[package]
+name = "TraceLock-epbf-ebpf"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+TraceLock_epbf_common = { package = "TraceLock-epbf-common", path = "../TraceLock_epbf_common" }
+
+aya-ebpf = { workspace = true }
+aya-log-ebpf = { workspace = true }
+
+[build-dependencies]
+which = { workspace = true }
+
+[[bin]]
+name = "TraceLock-epbf"
+path = "src/main.rs"

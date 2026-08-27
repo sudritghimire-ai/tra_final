@@ -1,7 +1,7 @@
 // src/events.rs
 //
 // Event model + deterministic canonicalization.
-// In the real TimeFence system, these will come from eBPF/Falco/Tetragon/OTel/K8s.
+// In the real TraceLock system, these will come from eBPF/Falco/Tetragon/OTel/K8s.
 // For now, we create stable event records and map them to u128 values.
 
 use std::collections::hash_map::DefaultHasher;

@@ -1,0 +1,4 @@
+error: failed to open: /home/sudri/k-sentry/TraceLock-epbf/target/release/.cargo-lock
+
+Caused by:
+  Permission denied (os error 13)

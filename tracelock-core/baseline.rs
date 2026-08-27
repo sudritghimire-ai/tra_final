@@ -136,7 +136,7 @@ fn bench_blake3_batch(events: &[u128], run: usize) -> BaselineBenchRow {
 fn bench_hmac_sha256_batch(events: &[u128], run: usize) -> BaselineBenchRow {
     let start = Instant::now();
 
-    let key = b"timefence-demo-key";
+    let key = b"TraceLock-demo-key";
     let mut mac =
         HmacSha256::new_from_slice(key).expect("HMAC can take key of any size");
 

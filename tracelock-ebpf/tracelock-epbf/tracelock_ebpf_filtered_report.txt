@@ -1,0 +1,24 @@
+TraceLock eBPF filtered K-Sentry report
+=======================================
+source=eBPF ringbuf
+tracepoints=syscalls:sys_enter_execve,syscalls:sys_enter_openat,syscalls:sys_enter_connect
+filter=Exec(selected shell/tools) OR OpenFile(/tmp/TraceLock,/etc/hostname,/etc/passwd) OR Connect(any)
+core=TraceLock-core path dependency
+accumulator=K-Sentry triangular O(1) updater
+kept_events=30
+skipped_events=420
+final_digest=701035188
+
+First kept events:
+- type=OpenFile pid=35958 uid=1000 ts=2246403709680 comm=bash target=/tmp/TraceLock_live.txt x=729034995 digest_after=729034995
+- type=Exec pid=35971 uid=1000 ts=2246404606913 comm=bash target=<empty> x=10909717 digest_after=805403014
+- type=OpenFile pid=35971 uid=1000 ts=2246405392874 comm=cat target=/tmp/TraceLock_live.txt x=923523513 digest_after=573965754
+- type=Exec pid=35972 uid=1000 ts=2246405867358 comm=bash target=<empty> x=971068649 digest_after=828652240
+- type=OpenFile pid=35972 uid=1000 ts=2246406530193 comm=cat target=/etc/hostname x=756157251 digest_after=92862790
+
+Last kept events:
+- type=OpenFile pid=35958 uid=1000 ts=2250290935570 comm=bash target=/tmp/TraceLock_live.txt x=870453351 digest_after=414588111
+- type=Exec pid=35983 uid=1000 ts=2250291423253 comm=bash target=<empty> x=195159856 digest_after=336931472
+- type=OpenFile pid=35983 uid=1000 ts=2250292175283 comm=cat target=/tmp/TraceLock_live.txt x=458856652 digest_after=57410960
+- type=Exec pid=35984 uid=1000 ts=2250292612327 comm=bash target=<empty> x=60984642 digest_after=599186636
+- type=OpenFile pid=35984 uid=1000 ts=2250293233503 comm=cat target=/etc/hostname x=42970820 digest_after=701035188

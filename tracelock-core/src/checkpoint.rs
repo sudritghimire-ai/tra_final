@@ -1,13 +1,13 @@
 // src/checkpoint.rs
 //
-// TimeFence checkpoint metadata.
+// TraceLock checkpoint metadata.
 //
 // This is the production layer around K-Sentry:
 // length-changing edits are caught by metadata,
 // same-length/order/content edits are checked by digest.
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct TimeFenceCheckpoint {
+pub struct TraceLockCheckpoint {
     pub stream_id: String,
     pub epoch: u64,
     pub start_seq: u64,
@@ -18,7 +18,7 @@ pub struct TimeFenceCheckpoint {
     pub p: u128,
 }
 
-impl TimeFenceCheckpoint {
+impl TraceLockCheckpoint {
     pub fn new(
         stream_id: impl Into<String>,
         epoch: u64,
@@ -147,7 +147,7 @@ mod tests {
 
     #[test]
     fn test_checkpoint_range_valid() {
-        let c = TimeFenceCheckpoint::new("node-1:runtime", 0, 10, 5, 12345, 7, 1_000_000_007);
+        let c = TraceLockCheckpoint::new("node-1:runtime", 0, 10, 5, 12345, 7, 1_000_000_007);
 
         assert_eq!(c.start_seq, 10);
         assert_eq!(c.len, 5);
@@ -157,8 +157,8 @@ mod tests {
 
     #[test]
     fn test_same_range() {
-        let a = TimeFenceCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
-        let b = TimeFenceCheckpoint::new("s", 0, 0, 4, 222, 7, 1_000_000_007);
+        let a = TraceLockCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
+        let b = TraceLockCheckpoint::new("s", 0, 0, 4, 222, 7, 1_000_000_007);
 
         assert!(a.same_range_as(&b));
         assert!(!a.digest_matches(&b));
@@ -166,8 +166,8 @@ mod tests {
 
     #[test]
     fn test_length_mismatch_detected() {
-        let expected = TimeFenceCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
-        let observed = TimeFenceCheckpoint::new("s", 0, 0, 3, 111, 7, 1_000_000_007);
+        let expected = TraceLockCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
+        let observed = TraceLockCheckpoint::new("s", 0, 0, 3, 111, 7, 1_000_000_007);
 
         let reason = expected.reason_mismatch(&observed);
 
@@ -177,8 +177,8 @@ mod tests {
 
     #[test]
     fn test_digest_mismatch_detected() {
-        let expected = TimeFenceCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
-        let observed = TimeFenceCheckpoint::new("s", 0, 0, 4, 999, 7, 1_000_000_007);
+        let expected = TraceLockCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
+        let observed = TraceLockCheckpoint::new("s", 0, 0, 4, 999, 7, 1_000_000_007);
 
         let reason = expected.reason_mismatch(&observed);
 
@@ -188,8 +188,8 @@ mod tests {
 
     #[test]
     fn test_adjacent_chunks() {
-        let a = TimeFenceCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
-        let b = TimeFenceCheckpoint::new("s", 0, 4, 3, 222, 7, 1_000_000_007);
+        let a = TraceLockCheckpoint::new("s", 0, 0, 4, 111, 7, 1_000_000_007);
+        let b = TraceLockCheckpoint::new("s", 0, 4, 3, 222, 7, 1_000_000_007);
 
         assert!(a.adjacent_to(&b));
     }

@@ -1,13 +1,13 @@
 // src/incident.rs
 //
-// End-to-end TimeFence incident demo using canonical telemetry events.
+// End-to-end TraceLock incident demo using canonical telemetry events.
 //
 // Goal:
 // Show a runtime-security timeline, inject telemetry faults,
 // convert events to field elements, then classify whether the evidence
 // window is clean, metadata-broken, or digest-broken.
 
-use crate::checkpoint::TimeFenceCheckpoint;
+use crate::checkpoint::TraceLockCheckpoint;
 use crate::events::{events_to_field_stream, incident_events, TelemetryEvent};
 use crate::fault::FaultKind;
 use crate::ksentry::ksentry_fast;
@@ -20,8 +20,8 @@ pub struct IncidentCase {
     pub observed_events: Vec<TelemetryEvent>,
     pub original_stream: Vec<u128>,
     pub observed_stream: Vec<u128>,
-    pub expected: TimeFenceCheckpoint,
-    pub observed_ckpt: TimeFenceCheckpoint,
+    pub expected: TraceLockCheckpoint,
+    pub observed_ckpt: TraceLockCheckpoint,
     pub report: VerificationReport,
 }
 
@@ -104,7 +104,7 @@ pub fn build_case(
     let expected_digest = ksentry_fast(&original_stream, q, p).digest();
     let observed_digest = ksentry_fast(&observed_stream, q, p).digest();
 
-    let expected = TimeFenceCheckpoint::new(
+    let expected = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,
@@ -114,7 +114,7 @@ pub fn build_case(
         p,
     );
 
-    let observed_ckpt = TimeFenceCheckpoint::new(
+    let observed_ckpt = TraceLockCheckpoint::new(
         "node-1:runtime",
         0,
         0,

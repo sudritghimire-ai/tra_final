@@ -1,6 +1,6 @@
 // src/fault.rs
 //
-// Fault injector for TimeFence experiments.
+// Fault injector for TraceLock experiments.
 //
 // These functions simulate what telemetry pipelines do under stress:
 // drops, reorders, duplicates, truncation, and splice/replay.

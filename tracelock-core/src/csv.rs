@@ -1,6 +1,6 @@
 // src/csv.rs
 //
-// CSV benchmark output for TimeFence local artifact.
+// CSV benchmark output for TraceLock local artifact.
 // Writes benchmark rows to artifacts/bench.csv.
 
 use std::fs;
